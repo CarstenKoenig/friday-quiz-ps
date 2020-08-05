@@ -1,0 +1,30 @@
+{
+  "name": "friday-quizz-ps",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build-ps": "spago build",
+    "serve-test-data": "http-server -a localhost -p 1235 ./test-data --cors",
+    "parcel-run": "parcel src/index.html",
+    "build-and-parcel": "run-s build-ps parcel-run",
+    "start": "start-server-and-test serve-test-data http://localhost:1235/Example.json build-and-parcel"
+  },
+  "keywords": [
+    "quizz",
+    "app",
+    "purescript",
+    "halogen"
+  ],
+  "author": "Carsten Koenig",
+  "license": "ISC",
+  "devDependencies": {
+    "http-server": "^0.12.3",
+    "npm-run-all": "^4.1.5",
+    "parcel-bundler": "^1.12.4",
+    "purescript": "^0.13.8",
+    "sass": "^1.26.10",
+    "spago": "^0.15.3",
+    "start-server-and-test": "^1.11.2"
+  }
+}

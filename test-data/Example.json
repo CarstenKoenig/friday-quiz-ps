@@ -1,0 +1,119 @@
+{
+    "response_code": 0,
+    "results": [
+        {
+            "category": "Entertainment: Video Games",
+            "type": "multiple",
+            "difficulty": "medium",
+            "question": "The original Planetside was released in North America on...",
+            "correct_answer": "May 20, 2003",
+            "incorrect_answers": [
+                "June 17, 2001",
+                "September 29, 2003",
+                "January 14, 2005"
+            ]
+        },
+        {
+            "category": "Geography",
+            "type": "multiple",
+            "difficulty": "easy",
+            "question": "What is the capital of Denmark?",
+            "correct_answer": "Copenhagen",
+            "incorrect_answers": [
+                "Aarhus",
+                "Odense",
+                "Aalborg"
+            ]
+        },
+        {
+            "category": "Science & Nature",
+            "type": "boolean",
+            "difficulty": "easy",
+            "question": "Salt is 100% composed of Sodium.",
+            "correct_answer": "False",
+            "incorrect_answers": [
+                "True"
+            ]
+        },
+        {
+            "category": "Entertainment: Video Games",
+            "type": "multiple",
+            "difficulty": "hard",
+            "question": "What device allows Tracer to manipulate her own time in the game &quot;Overwatch&quot;?",
+            "correct_answer": "Chronal Accelerator",
+            "incorrect_answers": [
+                "B.L.I.N.K",
+                "Spacial Displacement Manipulator",
+                "TMD (Time Manipulation Device)"
+            ]
+        },
+        {
+            "category": "Entertainment: Japanese Anime & Manga",
+            "type": "multiple",
+            "difficulty": "medium",
+            "question": "The main protagonist of the fourth part of JoJo&#039;s Bizarre Adventure is which of the following?",
+            "correct_answer": "Josuke Higashikata",
+            "incorrect_answers": [
+                "Yoshikage kira",
+                "Koichi Hirose",
+                "Joey JoJo"
+            ]
+        },
+        {
+            "category": "General Knowledge",
+            "type": "multiple",
+            "difficulty": "easy",
+            "question": "How tall is the Burj Khalifa?",
+            "correct_answer": "2,722 ft",
+            "incorrect_answers": [
+                "2,717 ft",
+                "2,546 ft",
+                "3,024 ft"
+            ]
+        },
+        {
+            "category": "General Knowledge",
+            "type": "boolean",
+            "difficulty": "medium",
+            "question": "&quot;Santa Claus&quot; is a variety of melon.",
+            "correct_answer": "True",
+            "incorrect_answers": [
+                "False"
+            ]
+        },
+        {
+            "category": "Mythology",
+            "type": "multiple",
+            "difficulty": "medium",
+            "question": "Which of the following is not one of the Greek Fates?",
+            "correct_answer": "Narcissus",
+            "incorrect_answers": [
+                "Clotho",
+                "Atropos",
+                "Lachesis"
+            ]
+        },
+        {
+            "category": "Sports",
+            "type": "boolean",
+            "difficulty": "medium",
+            "question": "In 2008, Usain Bolt set the world record for the 100 meters with one shoelace untied.",
+            "correct_answer": "True",
+            "incorrect_answers": [
+                "False"
+            ]
+        },
+        {
+            "category": "Geography",
+            "type": "multiple",
+            "difficulty": "medium",
+            "question": "How many provinces are in the Netherlands?",
+            "correct_answer": "12",
+            "incorrect_answers": [
+                "14",
+                "10",
+                "13"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,119 @@
+body {
+    margin: 0;
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+}
+
+.Game {
+    padding: 20px;
+}
+
+.Question {
+    height: 30vw;
+    max-height: 500px;
+    max-width: 800px;
+    padding: 20px;
+    perspective: 1200px;
+    width: 60vw;
+}
+
+.card {
+    background-color: whitesmoke;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    height: 100%;
+    margin: 18px;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 1s;
+    width: 100%;
+
+    & div {
+        padding: 8px;
+    }
+
+    h1 {
+        text-align: center;
+        color: darkslateblue;
+    }
+
+    .Answers {
+        display: flex;
+        justify-content: center;
+        text-align: center;
+
+        ul {
+            padding: 0;
+            list-style-type: none;
+        }
+
+        li {
+            border-bottom: 1px dashed black;
+            color: slategray;
+            cursor: default;
+            font-size: 22;
+            margin: 5px;
+            padding: 5px;
+
+            &.incorrect {
+                color: red;
+                text-decoration: line-through;
+            }
+
+            &.correct {
+                color: green;
+                font-weight: bold;
+            }
+        }
+
+
+        li:last-child {
+            border-bottom: none;
+        }
+    }
+
+    &.is-flipped {
+        transform: rotateY(180deg);
+    }
+
+    .card-navigation {
+        position: absolute;
+        bottom: 16px;
+        right: 8px;
+
+        a {
+            color: slateblue;
+            font-weight: bold;
+            text-decoration: none;
+        }
+    }
+}
+
+.card-face {
+    backface-visibility: hidden;
+    height: 100%;
+    position: absolute;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &.front {
+        transform: rotateY(0);
+
+        li {
+            cursor: pointer;
+        }
+
+        li:hover {
+            color: steelblue;
+            text-shadow: 1px 1px 1px palegoldenrod;
+        }
+    }
+
+    &.back {
+        transform: rotateY(180deg);
+    }
+}
