@@ -6,6 +6,7 @@ module Data.Questions
     , modifyAt
     , setAnswerAt
     , shuffleQuestions
+    , getQuestionStates
     ) where
 
 import Prelude
@@ -13,7 +14,8 @@ import Prelude
 import Data.Argonaut.Decode (class DecodeJson, decodeJson, (.:))
 import Data.Array as A
 import Data.Maybe (Maybe, fromMaybe)
-import Data.Question (Answer, Question, setAnswer, shuffleAnswers)
+import Data.Question (Answer, Question, QuestionState)
+import Data.Question as Q
 import Data.Traversable (traverse)
 import Effect.Class (class MonadEffect, liftEffect)
 import Utils.Shuffle (shuffle)
@@ -54,10 +56,15 @@ modifyAt ind modify (Questions qs) =
 
 setAnswerAt :: Int -> Answer -> Questions -> Questions
 setAnswerAt ind answ questions = fromMaybe questions $
-    modifyAt ind (setAnswer answ) questions
+    modifyAt ind (Q.setAnswer answ) questions
 
 
 shuffleQuestions :: forall m. MonadEffect m => Questions -> m Questions
 shuffleQuestions (Questions questions) = do
-    shuffledAnswers <- traverse shuffleAnswers questions
+    shuffledAnswers <- traverse Q.shuffleAnswers questions
     Questions <$> (liftEffect $ shuffle shuffledAnswers)
+
+
+getQuestionStates :: Questions -> Array QuestionState
+getQuestionStates (Questions qs) =
+    map Q.getState qs

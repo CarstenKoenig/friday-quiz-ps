@@ -6,6 +6,7 @@ import Prelude
 import Components.Question as Q
 import Data.Const (Const)
 import Data.Maybe (Maybe(..))
+import Data.Question as Qu
 import Data.Questions (Questions)
 import Data.Questions as Qs
 import Data.Symbol (SProxy(..))
@@ -48,6 +49,7 @@ component = Hooks.component createHook
               ] 
           ]
           [ displayCurrentQuestion
+          , displayState (Qs.getQuestionStates questions)
           ]
       where
       displayCurrentQuestion =
@@ -55,6 +57,24 @@ component = Hooks.component createHook
               Nothing -> HH.text ""
               Just question ->
                 HH.slot _question unit Q.component question handleQuestionOutput
+
+      displayState states =
+        HH.div
+          [ HP.class_ (ClassName "States") ]
+          (map showState states)
+        where
+        showState Qu.NotAnswered =
+          HH.span
+            [ HP.class_ (ClassName "not-answered") ]
+            [ HH.text "○"]
+        showState Qu.AnsweredCorrect =
+          HH.span
+            [ HP.class_ (ClassName "correct-answer") ]
+            [ HH.text "●"]
+        showState Qu.AnsweredWrong =
+          HH.span
+            [ HP.class_ (ClassName "wrong-answer") ]
+            [ HH.text "●"]
 
       handleQuestionOutput output =
         case output of

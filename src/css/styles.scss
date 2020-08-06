@@ -117,3 +117,24 @@ body {
         transform: rotateY(180deg);
     }
 }
+
+.States {
+    margin-top: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    span {
+        margin-left: 3px;
+        margin-right: 3px;
+        font-size: 1.3em;
+        
+        &.correct-answer {
+            color: darkgreen;
+        }
+
+        &.wrong-answer {
+            color: darkred;
+        }
+    }
+}

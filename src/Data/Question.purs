@@ -3,8 +3,10 @@ module Data.Question
 , Answer
 , Type (..)
 , Difficulty (..)
+, QuestionState (..)
 , shuffleAnswers
 , setAnswer
+, getState
 ) where
 
 import Prelude
@@ -91,6 +93,23 @@ instance decodeJsonQuestion :: DecodeJson Question where
             , answers
             , answerGiven: Nothing
             }
+
+
+data QuestionState
+    = NotAnswered
+    | AnsweredCorrect
+    | AnsweredWrong
+
+
+getState :: Question -> QuestionState
+getState (Question q) =
+    case q.answerGiven of
+        Nothing -> NotAnswered
+        Just answer -> 
+            if answer.is_correct then
+                AnsweredCorrect 
+            else 
+                AnsweredWrong
 
 
 shuffleAnswers :: forall m. MonadEffect m => Question -> m Question
