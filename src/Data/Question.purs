@@ -3,7 +3,6 @@ module Data.Question
 , Answer
 , Type (..)
 , Difficulty (..)
-, shuffleQuestions
 , shuffleAnswers
 ) where
 
@@ -13,7 +12,6 @@ import Data.Argonaut.Decode (class DecodeJson, JsonDecodeError(..), decodeJson, 
 import Data.Array ((:))
 import Data.Either (Either(..))
 import Data.String as String
-import Data.Traversable (traverse)
 import Effect.Class (class MonadEffect, liftEffect)
 import Utils.Shuffle (shuffle)
 
@@ -77,12 +75,6 @@ instance decodeJsonQuestion :: DecodeJson Question where
                 { answer: correct_answer, is_correct: true}
                 : map (\a -> { answer: a, is_correct: false }) incorrect_answers
         pure $ Question { category, type: t, difficulty, question, answers }
-
-
-shuffleQuestions :: forall m. MonadEffect m => Array Question -> m (Array Question)
-shuffleQuestions questions = do
-    shuffledAnswers <- traverse shuffleAnswers questions
-    liftEffect $ shuffle shuffledAnswers
 
 
 shuffleAnswers :: forall m. MonadEffect m => Question -> m Question

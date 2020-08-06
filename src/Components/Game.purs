@@ -4,11 +4,10 @@ module Components.Game where
 import Prelude
 
 import Components.Question as Q
-import Data.Array ((!!))
-import Data.Array as Array
 import Data.Const (Const)
 import Data.Maybe (Maybe(..))
-import Data.Question (Question)
+import Data.Questions (Questions)
+import Data.Questions as Qs
 import Data.Symbol (SProxy(..))
 import Data.Tuple.Nested ((/\))
 import Effect.Class (class MonadEffect)
@@ -20,7 +19,7 @@ import Halogen.HTML.Properties as HP
 import Halogen.Hooks as Hooks
 
 type Query = Const Void
-type Input = Array Question
+type Input = Questions
 type Output = Void
 
 -- Slots for Child-Components
@@ -37,7 +36,7 @@ component = Hooks.component createHook
   where
   createHook { slotToken } questions = Hooks.do
     currentQuestionIndex /\ currentQuestionIndexId <- Hooks.useState 0
-    let currentQuestion = questions !! currentQuestionIndex
+    let currentQuestion = questions Qs.!! currentQuestionIndex
 
     Hooks.pure $ gameDiv currentQuestion currentQuestionIndexId
     where 
@@ -60,5 +59,5 @@ component = Hooks.component createHook
         case output of
           Q.MoveNext -> Just do
             void $ Hooks.query slotToken _question unit $ H.tell Q.Reset
-            Hooks.modify_ currentQuestionIndexId (\i -> (i+1) `mod` Array.length questions)
+            Hooks.modify_ currentQuestionIndexId (\i -> (i+1) `mod` Qs.size questions)
           _ -> Nothing
