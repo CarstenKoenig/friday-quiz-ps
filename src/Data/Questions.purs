@@ -3,6 +3,8 @@ module Data.Questions
     , empty
     , index, (!!)
     , size
+    , modifyAt
+    , setAnswerAt
     , shuffleQuestions
     ) where
 
@@ -10,8 +12,8 @@ import Prelude
 
 import Data.Argonaut.Decode (class DecodeJson, decodeJson, (.:))
 import Data.Array as A
-import Data.Maybe (Maybe)
-import Data.Question (Question, shuffleAnswers)
+import Data.Maybe (Maybe, fromMaybe)
+import Data.Question (Answer, Question, setAnswer, shuffleAnswers)
 import Data.Traversable (traverse)
 import Effect.Class (class MonadEffect, liftEffect)
 import Utils.Shuffle (shuffle)
@@ -43,6 +45,16 @@ index (Questions qs) n =
 size :: Questions -> Int
 size (Questions qs) =
     A.length qs
+
+
+modifyAt :: Int -> (Question -> Question) -> Questions -> Maybe Questions
+modifyAt ind modify (Questions qs) =
+    Questions <$> A.modifyAt ind modify qs
+
+
+setAnswerAt :: Int -> Answer -> Questions -> Questions
+setAnswerAt ind answ questions = fromMaybe questions $
+    modifyAt ind (setAnswer answ) questions
 
 
 shuffleQuestions :: forall m. MonadEffect m => Questions -> m Questions

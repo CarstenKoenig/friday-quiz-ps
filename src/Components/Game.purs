@@ -34,13 +34,14 @@ _question = SProxy :: SProxy "question"
 component :: forall m. MonadEffect m => Component HTML Query Input Output m
 component = Hooks.component createHook
   where
-  createHook { slotToken } questions = Hooks.do
+  createHook { slotToken } qs = Hooks.do
+    questions /\ questionsId <- Hooks.useState qs
     currentQuestionIndex /\ currentQuestionIndexId <- Hooks.useState 0
     let currentQuestion = questions Qs.!! currentQuestionIndex
 
-    Hooks.pure $ gameDiv currentQuestion currentQuestionIndexId
+    Hooks.pure $ gameDiv currentQuestion currentQuestionIndexId questions questionsId
     where 
-    gameDiv currentQuestion currentQuestionIndexId =
+    gameDiv currentQuestion currentQuestionIndexId questions questionsId =
       HH.div
           [ HP.classes 
               [ ClassName "Game"
@@ -60,4 +61,6 @@ component = Hooks.component createHook
           Q.MoveNext -> Just do
             void $ Hooks.query slotToken _question unit $ H.tell Q.Reset
             Hooks.modify_ currentQuestionIndexId (\i -> (i+1) `mod` Qs.size questions)
-          _ -> Nothing
+          Q.AnswerGiven answer -> Just do
+            ind <- Hooks.get currentQuestionIndexId
+            Hooks.modify_ questionsId (Qs.setAnswerAt ind answer)

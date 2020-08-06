@@ -22,8 +22,7 @@ data Query a
     = Reset a
 type Input = Question
 data Output
-    = CorrectAnswer Answer
-    | WrongAnswer Answer
+    = AnswerGiven Answer
     | MoveNext
 
 
@@ -50,10 +49,7 @@ component = Hooks.component createHook
       where
         onClickHandler answer _ = Just $ do
             Hooks.put answeredId (Just answer)
-            if answer.is_correct then
-                Hooks.raise outputToken (CorrectAnswer answer)
-            else
-                Hooks.raise outputToken (WrongAnswer answer)
+            Hooks.raise outputToken (AnswerGiven answer)
 
         gotoNextHandler event = Just do
             liftEffect $ preventDefault $ ME.toEvent event

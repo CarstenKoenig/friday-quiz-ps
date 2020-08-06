@@ -4,6 +4,7 @@ module Data.Question
 , Type (..)
 , Difficulty (..)
 , shuffleAnswers
+, setAnswer
 ) where
 
 import Prelude
@@ -11,6 +12,7 @@ import Prelude
 import Data.Argonaut.Decode (class DecodeJson, JsonDecodeError(..), decodeJson, (.:))
 import Data.Array ((:))
 import Data.Either (Either(..))
+import Data.Maybe (Maybe(..))
 import Data.String as String
 import Effect.Class (class MonadEffect, liftEffect)
 import Utils.Shuffle (shuffle)
@@ -54,7 +56,14 @@ data Question
     , difficulty        :: Difficulty
     , question          :: String
     , answers           :: Array Answer
+    , answerGiven       :: Maybe Answer
     }
+
+
+setAnswer :: Answer -> Question -> Question
+setAnswer answer (Question q) =
+    Question $ q { answerGiven = Just answer }
+
 
 type Answer =
     { answer :: String
@@ -74,7 +83,14 @@ instance decodeJsonQuestion :: DecodeJson Question where
             answers =
                 { answer: correct_answer, is_correct: true}
                 : map (\a -> { answer: a, is_correct: false }) incorrect_answers
-        pure $ Question { category, type: t, difficulty, question, answers }
+        pure $ Question 
+            { category
+            , type: t
+            , difficulty
+            , question
+            , answers
+            , answerGiven: Nothing
+            }
 
 
 shuffleAnswers :: forall m. MonadEffect m => Question -> m Question
