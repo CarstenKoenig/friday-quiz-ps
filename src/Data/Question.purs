@@ -11,6 +11,7 @@ module Data.Question
 
 import Prelude
 
+import Control.Alt ((<|>))
 import Data.Argonaut.Decode (class DecodeJson, JsonDecodeError(..), decodeJson, (.:))
 import Data.Array ((:))
 import Data.Either (Either(..))
@@ -62,9 +63,10 @@ data Question
     }
 
 
+-- watch out: you cannot overwrite answers already given
 setAnswer :: Answer -> Question -> Question
 setAnswer answer (Question q) =
-    Question $ q { answerGiven = Just answer }
+    Question $ q { answerGiven = q.answerGiven <|> Just answer }
 
 
 type Answer =

@@ -79,8 +79,13 @@ component = Hooks.component createHook
       handleQuestionOutput output =
         case output of
           Q.MoveNext -> Just do
-            void $ Hooks.query slotToken _question unit $ H.tell Q.Reset
-            Hooks.modify_ currentQuestionIndexId (\i -> (i+1) `mod` Qs.size questions)
+            ind <- Hooks.modify currentQuestionIndexId (\i -> (i+1) `mod` Qs.size questions)
+            question <- (_ Qs.!! ind) <$> Hooks.get questionsId
+            case question of
+              Just q ->
+                void $ Hooks.query slotToken _question unit $ H.tell (Q.Reset q)
+              Nothing ->
+                pure unit
           Q.AnswerGiven answer -> Just do
             ind <- Hooks.get currentQuestionIndexId
             Hooks.modify_ questionsId (Qs.setAnswerAt ind answer)
