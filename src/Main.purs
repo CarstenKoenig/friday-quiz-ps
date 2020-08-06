@@ -11,6 +11,11 @@ import Effect.Class.Console (log)
 import Halogen.Aff (awaitBody, runHalogenAff)
 import Halogen.VDom.Driver (runUI)
 
+liveUrl :: String
+liveUrl = "https://opentdb.com/api.php?amount=10"
+
+mockUrl :: String
+mockUrl = "http://localhost:1235/Example.json"
 
 main :: Effect Unit
 main = do
@@ -19,7 +24,7 @@ main = do
     body <- awaitBody
     -- get test-input
     questions <- do
-      qs <- Api.getQuestions "http://localhost:1235/Example.json"
+      qs <- Api.getQuestions liveUrl
       case qs of
         Left (Api.JsonError err) -> log err
         Left (Api.HttpError err) -> log err
