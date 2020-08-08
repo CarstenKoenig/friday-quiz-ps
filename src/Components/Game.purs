@@ -13,7 +13,6 @@ import Data.Symbol (SProxy(..))
 import Data.Tuple.Nested ((/\))
 import Effect.Class (class MonadEffect)
 import Halogen (ClassName(..), Component, Slot)
-import Halogen as H
 import Halogen.HTML (HTML)
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
@@ -79,13 +78,7 @@ component = Hooks.component createHook
       handleQuestionOutput output =
         case output of
           Q.MoveNext -> Just do
-            ind <- Hooks.modify currentQuestionIndexId (\i -> (i+1) `mod` Qs.size questions)
-            question <- (_ Qs.!! ind) <$> Hooks.get questionsId
-            case question of
-              Just q ->
-                void $ Hooks.query slotToken _question unit $ H.tell (Q.Reset q)
-              Nothing ->
-                pure unit
+            Hooks.modify_ currentQuestionIndexId (\i -> (i+1) `mod` Qs.size questions)
           Q.AnswerGiven answer -> Just do
             ind <- Hooks.get currentQuestionIndexId
             Hooks.modify_ questionsId (Qs.setAnswerAt ind answer)

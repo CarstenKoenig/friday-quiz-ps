@@ -3,10 +3,9 @@ module Components.Question where
 import Prelude
 
 import Data.Array (filter)
+import Data.Const (Const)
 import Data.Maybe (Maybe(..), isJust)
 import Data.Question (Question(..), Answer)
-import Data.Question as Q
-import Data.Tuple.Nested ((/\))
 import Effect.Class (class MonadEffect, liftEffect)
 import Halogen (ClassName(..), Component)
 import Halogen.HTML (HTML)
@@ -19,8 +18,7 @@ import Web.Event.Event (preventDefault)
 import Web.UIEvent.MouseEvent as ME
 
 
-data Query a
-    = Reset Question a
+type Query = Const Void
 type Input = Question
 data Output
     = AnswerGiven Answer
@@ -30,17 +28,11 @@ data Output
 component :: forall m. MonadEffect m => Component HTML Query Input Output m
 component = Hooks.component createHook
   where
-  createHook { queryToken, outputToken } q = Hooks.do
-    (Question question) /\ questionId <- Hooks.useState q
+  createHook { queryToken, outputToken } (Question question) = Hooks.do
 
-    Hooks.useQuery queryToken case _ of
-        Reset quest cont -> do
-            Hooks.put questionId quest
-            pure $ Just cont
-
-    Hooks.pure $ gameDiv question questionId
+    Hooks.pure gameDiv
     where 
-    gameDiv question questionId =
+    gameDiv =
       HH.div
           [ HP.classes 
               [ ClassName "Question"
@@ -51,7 +43,6 @@ component = Hooks.component createHook
         answered = question.answerGiven
 
         onClickHandler answer _ = Just $ do
-            Hooks.modify_ questionId (Q.setAnswer answer)
             Hooks.raise outputToken (AnswerGiven answer)
 
         gotoNextHandler event = Just do
