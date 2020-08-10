@@ -11,6 +11,7 @@ import Data.Questions (Questions)
 import Data.Questions as Qs
 import Data.Symbol (SProxy(..))
 import Data.Tuple.Nested ((/\))
+import Effect.Aff.Class (class MonadAff)
 import Effect.Class (class MonadEffect)
 import Halogen (ClassName(..), Component, Slot)
 import Halogen.HTML (HTML)
@@ -31,7 +32,7 @@ type Slots =
 _question = SProxy :: SProxy "question"
 
 
-component :: forall m. MonadEffect m => Component HTML Query Input Output m
+component :: forall m. MonadAff m => MonadEffect m => Component HTML Query Input Output m
 component = Hooks.component createHook
   where
   createHook { slotToken } qs = Hooks.do

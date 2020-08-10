@@ -24,7 +24,7 @@ main = do
     body <- awaitBody
     -- get test-input
     questions <- do
-      qs <- Api.getQuestions liveUrl
+      qs <- Api.getQuestions mockUrl
       case qs of
         Left (Api.JsonError err) -> log err
         Left (Api.HttpError err) -> log err

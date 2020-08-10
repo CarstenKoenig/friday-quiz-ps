@@ -6,6 +6,7 @@ import Data.Array (filter)
 import Data.Const (Const)
 import Data.Maybe (Maybe(..), isJust)
 import Data.Question (Question(..), Answer)
+import Effect.Aff.Class (class MonadAff)
 import Effect.Class (class MonadEffect, liftEffect)
 import Halogen (ClassName(..), Component)
 import Halogen.HTML (HTML)
@@ -25,11 +26,10 @@ data Output
     | MoveNext
 
 
-component :: forall m. MonadEffect m => Component HTML Query Input Output m
+component :: forall m. MonadAff m => MonadEffect m => Component HTML Query Input Output m
 component = Hooks.component createHook
   where
   createHook { queryToken, outputToken } (Question question) = Hooks.do
-
     Hooks.pure gameDiv
     where 
     gameDiv =
@@ -51,31 +51,38 @@ component = Hooks.component createHook
 
         card =
             HH.div
-                [ HP.class_ (ClassName $ if isJust answered then "card is-flipped" else "card") ]
+                [ HP.class_ (ClassName if isJust question.answerGiven then "card is-flipped" else "card") ]
                 [ cardFront
-                , cardBack
+                , if isJust question.answerGiven then cardBack else HH.text ""
                 ]
         cardFront =
             HH.div
                 [ HP.class_ (ClassName "card-face front") ]
                 [ HH.div_
-                    [ HH.h1_ [ RH.render_ question.question ]
+                    [ questionHeader
+                    , HH.h1_ [ RH.render_ question.question ]
                     , answersList question.answers
                     ]
                 ]
         cardBack =
             HH.div
                 [ HP.class_ (ClassName "card-face back") ]
-                ( case answered of 
-                    Nothing -> []
-                    Just givenAnswer ->
-                        [ HH.div_
-                            [ HH.h1_ [ RH.render_ question.question ]
-                            , answersBackList $ filter (\a -> a.is_correct || a == givenAnswer) question.answers
-                            , navigation
-                            ]
-                        ]
-                )
+                [ HH.div_
+                    [ HH.h1_ [ RH.render_ question.question ]
+                    , answersBackList $ filter (\a -> a.is_correct || Just a == question.answerGiven) question.answers
+                    , navigation
+                    ]
+                ]
+        questionHeader =
+            HH.div
+                [ HP.class_ (ClassName "question-header") ]
+                [ HH.span
+                    [ HP.class_ (ClassName "category") ]
+                    [ HH.text question.category ]
+                , HH.span
+                    [ HP.class_ (ClassName $ "difficulty " <> show question.difficulty ) ]
+                    [ HH.text (show question.difficulty) ]
+                ]
         answersList answers =
             HH.div
                 [ HP.class_ (ClassName "Answers") ]

@@ -40,6 +40,10 @@ data Difficulty
     | Medium
     | Hard
 
+instance showDifficulty :: Show Difficulty where
+    show Easy = "easy"
+    show Medium = "medium"
+    show Hard = "hard"
 
 instance decodeJsonDifficulty :: DecodeJson Difficulty where
     decodeJson json = do
@@ -49,7 +53,6 @@ instance decodeJsonDifficulty :: DecodeJson Difficulty where
             "medium" -> pure Medium
             "hard" -> pure Hard
             _ -> Left $ UnexpectedValue json
-
 
 
 data Question
